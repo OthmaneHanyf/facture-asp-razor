@@ -1,0 +1,79 @@
+﻿@page
+@model facture.Pages.factures.indexModel
+@{
+    
+}
+
+<br/>
+<div class="container row p-0 m-0">
+    <div class="col-9">
+        <h2 class="text-info">Factures</h2>
+    </div>
+    <div class="col-3">
+        <a asp-page="create" class="btn btn-info form-control text-white">Nouveau Facture</a>
+    </div>
+
+    <div class="col-12 border p-3 mt-3">
+        <form method="post">
+            @if (Model.factureList.Count() > 0) {
+                <table class="table table-striped border">
+                    <tr class="table-secondary">
+                        <th>
+                            <label asp-for="factureList.FirstOrDefault().designation"></label>
+                        </th>
+                        <th>
+                            <label asp-for="factureList.FirstOrDefault().prix"></label>
+                        </th>
+                        <th>
+                            <label asp-for="factureList.FirstOrDefault().quantite"></label>
+                        </th>
+                        <th>
+                            <label >Montant HT</label>
+                        </th>
+                        <th>
+                            <label >Montant TVA</label>
+                        </th>
+                        <th>
+                            <label >Total (TTC)</label>
+                        </th>
+                        <th>
+                            <label asp-for="factureList.FirstOrDefault().reference"></label>
+                        </th>
+                    </tr>
+                    @foreach (var facture in Model.factureList)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(m => facture.designation)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => facture.prix)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => facture.quantite)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => (facture.montantHt))
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => (facture.montantTva))
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => (facture.montantTtc))
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => facture.reference)
+                            </td>
+                            <td>
+                                <button asp-page-handler="Delete" asp-route-id="@facture.factureNumber" onclick="return confirm('Est-ce-que vous etes sure?')" class="btn-danger btn btn-sm">Supprimer</button>
+                                <a asp-page="update" asp-route-id="@facture.factureNumber" class="btn btn-light btn-sm">Modifier</a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            } else {
+                <p>Aucune Facture Trouvee</p>
+            }
+        </form>
+    </div>
+</div>

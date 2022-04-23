@@ -1,0 +1,85 @@
+﻿@page
+@model facture.Pages.factures.createModel
+@{
+}
+
+<br>
+<h2 class="text-info">Nouveau Facture</h2>
+<br>
+
+<div class="border p-5 container">
+    <form method="post">
+        <div class="text-danger" asp-validation-summary="ModelOnly" ></div>
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="facture.designation"></label>
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control" asp-for="facture.designation" />
+                    </div>
+                    <div class="mt-1 col-12">
+                        <span class="text-danger" asp-validation-for="facture.designation" ></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="facture.reference"></label>
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control" asp-for="facture.reference" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-6">
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="facture.quantite"></label>
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control" asp-for="facture.quantite" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="facture.prix"></label>
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control" asp-for="facture.prix" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-6">
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="facture.tva"></label>
+                    </div>
+                    <div class="col-6">
+                        <select class="form-control" asp-for="facture.tva" >
+                            <option value="20">20%</option>
+                            <option value="7">7%</option>
+                        </select>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-12 mt-4">
+                <div class="form-group row text-center">
+                    <div class="col-3 offset-3">
+                        <input type="submit" value="Valider" class="btn btn-primary form-control" />
+                    </div>
+                    <div class="col-3">
+                        <a asp-page="index" class="btn btn-danger form-control" >Annuler</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
