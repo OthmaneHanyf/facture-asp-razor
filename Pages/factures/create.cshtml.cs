@@ -12,9 +12,9 @@ namespace facture.Pages.factures
 {
     public class createModel : PageModel
     {
-        private readonly FactureDummyDb _db;
+        private readonly FactureDbContext _db;
 
-        public createModel(FactureDummyDb db)
+        public createModel(FactureDbContext db)
         {
             _db = db;
         }
@@ -22,21 +22,31 @@ namespace facture.Pages.factures
         [BindProperty]
         public FactureDto facture {get; set;}
 
-        public ActionResult OnPost()
+        public async Task<ActionResult> OnPost()
         {
             if (ModelState.IsValid) {
-                Facture newFacture = new Facture(){
-                    factureNumber = _db.factures.Count() + 1,
-                    designation = facture.designation,
-                    prix = facture.prix,
-                    quantite = facture.quantite,
-                    tva = facture.tva,
-                    reference = facture.reference,
-                };
+                Client client = _db.Clients.FirstOrDefault(c => c.id == facture.clientId &&
+                                                                c.idCommunEntreprise == facture.idCommunEntreprise &&
+                                                                c.raisonSociale == facture.raisonSociale &&
+                                                                c.idFiscal == facture.idFiscal);
+                if (client != null) {
+                    Facture newFacture = new Facture(){
+                        factureNumber = 0,
+                        designation = facture.designation,
+                        prix = facture.prix,
+                        quantite = facture.quantite,
+                        tva = facture.tva,
+                        reference = facture.reference,
+                        clientId = facture.clientId,
+                    };
 
-                _db.factures.Add(newFacture);
+                    await _db.Factures.AddAsync(newFacture);
+                    await _db.SaveChangesAsync();
 
-                return RedirectToPage("index");
+                    return RedirectToPage("index");
+                } else {
+                    return Page();
+                }
             } else {
                 return Page();
             }

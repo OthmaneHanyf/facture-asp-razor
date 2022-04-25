@@ -19,7 +19,7 @@
                 <table class="table table-striped border">
                     <tr class="table-secondary">
                         <th>
-                            <label asp-for="factureList.FirstOrDefault().designation"></label>
+                            <label >Client Id</label>
                         </th>
                         <th>
                             <label asp-for="factureList.FirstOrDefault().prix"></label>
@@ -43,6 +43,9 @@
                     @foreach (var facture in Model.factureList)
                     {
                         <tr>
+                            <td>
+                                @Html.DisplayFor(m => facture.clientId)
+                            </td>
                             <td>
                                 @Html.DisplayFor(m => facture.designation)
                             </td>

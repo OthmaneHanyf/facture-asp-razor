@@ -22,6 +22,10 @@ namespace facture.Models
         
         [Required]
         public int tva {get;set;}
+
+        [Required]
+        public int clientId {set; get;}
+        public Client client;
         
     }
 }

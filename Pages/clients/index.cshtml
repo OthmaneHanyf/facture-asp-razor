@@ -1,0 +1,102 @@
+﻿@page
+@model facture.Pages.clients.indexModel
+@{
+}
+
+<br/>
+<div class="container row p-0 m-0">
+    <div class="col-9">
+        <h2 class="text-info">Clients</h2>
+    </div>
+    <div class="col-3">
+        <a asp-page="create" class="btn btn-info form-control text-white">Nouveau Client</a>
+    </div>
+
+    <div class="col-12 border p-3 mt-3">
+        <form method="post">
+            @if (Model.clientList.Count() > 0) {
+                <table class="table table-striped border">
+                    <tr class="table-secondary">
+                        <th>
+                            <label >Nom</label>
+                        </th>
+                        <th>
+                            <label >ID</label>
+                        </th>
+                        <th>
+                            <label >RS</label>
+                        </th>
+                        <th>
+                            <label >IF</label>
+                        </th>
+                        <th>
+                            <label >ICE</label>
+                        </th>
+                        <th>
+                            <label >Nom Responsable</label>
+                        </th>
+                        <th>
+                            <label >Tel</label>
+                        </th>
+                        @* <th>
+                            <label >Portable</label>
+                        </th>
+                        <th>
+                            <label >Fax</label>
+                        </th> *@
+                        <th>
+                            <label >Email</label>
+                        </th>
+                        @* <th>
+                            <label >Adresse</label>
+                        </th> *@
+                    </tr>
+                    @foreach (var client in Model.clientList)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(m => client.nom)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => client.id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => client.raisonSociale)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => client.idFiscal)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => client.idCommunEntreprise)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => client.nomRespo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => (client.tel))
+                            </td>
+                            @* <td>
+                                @Html.DisplayFor(m => (client.portable))
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => (client.fax))
+                            </td> *@
+                            <td>
+                                @Html.DisplayFor(m => client.email)
+                            </td>
+                            @* <td>
+                                @Html.DisplayFor(m => client.adresse)
+                            </td> *@
+                            <td>
+                                <button asp-page-handler="Delete" asp-route-id="@client.id" onclick="return confirm('Est-ce-que vous etes sure?')" class="btn-danger btn btn-sm">Supprimer</button>
+                                <a asp-page="update" asp-route-id="@client.id" class="btn btn-light btn-sm">Modifier</a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            } else {
+                <p>Aucune Client Trouvee</p>
+            }
+        </form>
+    </div>
+</div>

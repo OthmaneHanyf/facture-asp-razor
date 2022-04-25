@@ -14,9 +14,9 @@ namespace facture.Pages.factures
 
     public class updateModel : PageModel
     {
-        private readonly FactureDummyDb _db;
+        private readonly FactureDbContext _db;
 
-        public updateModel(FactureDummyDb db)
+        public updateModel(FactureDbContext db)
         {
             _db = db;
         }
@@ -24,13 +24,13 @@ namespace facture.Pages.factures
         [BindProperty]
         public FactureDto facture {get; set;}
 
-        public ActionResult OnGet(int id)
+        public async Task<ActionResult> OnGet(int id)
         {
-            var f = _db.factures.Find(f => f.factureNumber == id);
+            var f = await _db.Factures.FindAsync(id);
             if (f == null) {
                 return RedirectToPage("Error");
             } else {
-                facture = new FactureDto{
+                facture = new FactureDto {
                     factureNumber = f.factureNumber,
                     designation = f.designation,
                     prix = f.prix,
@@ -42,16 +42,16 @@ namespace facture.Pages.factures
             }
         }
 
-        public ActionResult OnPost(int id)
+        public async Task<ActionResult> OnPost(int id)
         {
-            Console.WriteLine(id);
+
             if (ModelState.IsValid) {
 
-                Facture fac = _db.factures.Find(f => f.factureNumber == id);
+                Facture fac = await _db.Factures.FindAsync(id);
                 
-                _db.factures.Remove(fac);
+                _db.Factures.Remove(fac);
 
-                _db.factures.Add(new Facture(){
+                await _db.Factures.AddAsync(new Facture(){
                     factureNumber = facture.factureNumber,
                     designation = facture.designation,
                     prix = facture.prix,
@@ -59,6 +59,8 @@ namespace facture.Pages.factures
                     tva = facture.tva,
                     reference = facture.reference,
                 });
+
+                await _db.SaveChangesAsync();
 
                 return RedirectToPage("index");
             } else {

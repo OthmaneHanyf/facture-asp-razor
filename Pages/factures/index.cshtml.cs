@@ -11,9 +11,9 @@ namespace facture.Pages.factures
 {
     public class indexModel : PageModel
     {
-        private readonly FactureDummyDb _db;
+        private readonly FactureDbContext _db;
 
-        public indexModel(FactureDummyDb db)
+        public indexModel(FactureDbContext db)
         {
             _db = db;
         }
@@ -24,7 +24,7 @@ namespace facture.Pages.factures
         {
             factureList = new List<FactureDto>();
 
-            foreach (var facture in _db.factures)
+            foreach (var facture in _db.Factures.AsEnumerable())
             {
                 FactureDto tmpFacture = new FactureDto {
                     factureNumber = facture.factureNumber,
@@ -36,6 +36,7 @@ namespace facture.Pages.factures
                     montantHt = facture.prix * facture.quantite,
                     montantTva = facture.prix * facture.quantite * facture.tva / 100,
                     montantTtc = facture.prix * facture.quantite * ((double)facture.tva / 100 + 1),
+                    clientId = facture.clientId,
                 };
 
                 factureList.Add(tmpFacture);
@@ -43,9 +44,10 @@ namespace facture.Pages.factures
 
         }
 
-        public ActionResult OnPostDelete(int id) {
-            var facture = _db.factures.Find(f => (int)f.factureNumber == id);
-            _db.factures.Remove(facture);
+        public async Task<ActionResult> OnPostDelete(int id) {
+            var facture = await _db.Factures.FindAsync(id);
+            _db.Factures.Remove(facture);
+            await _db.SaveChangesAsync();
             
             return RedirectToPage("index");
         }
