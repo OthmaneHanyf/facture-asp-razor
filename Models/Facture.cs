@@ -26,6 +26,9 @@ namespace facture.Models
         [Required]
         public int clientId {set; get;}
         public Client client;
+
+        [Required]
+        public string raisonSociale {get;set;}
         
     }
 }

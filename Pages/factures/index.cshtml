@@ -6,12 +6,13 @@
 
 <br/>
 <div class="container row p-0 m-0">
-    <div class="col-9">
+    <div class="col-7">
         <h2 class="text-info">Factures</h2>
     </div>
-    <div class="col-3">
-        <a asp-page="create" class="btn btn-info form-control text-white">Nouveau Facture</a>
-    </div>
+    <form method="post" asp-page-handler="ExportCSV" class="d-flex col-5">
+        <button type="submit" class="btn btn-success form-control text-white ml-3">Export CSV</button>
+        <a asp-page="create" class="btn btn-info form-control text-white">Nouvelle Facture</a>
+    </form>
 
     <div class="col-12 border p-3 mt-3">
         <form method="post">
@@ -20,6 +21,9 @@
                     <tr class="table-secondary">
                         <th>
                             <label >Client Id</label>
+                        </th>
+                        <th>
+                            <label asp-for="factureList.FirstOrDefault().designation"></label>
                         </th>
                         <th>
                             <label asp-for="factureList.FirstOrDefault().prix"></label>

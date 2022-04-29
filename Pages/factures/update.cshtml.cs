@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using facture.Data;
 using facture.Dtos;
 using facture.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace facture.Pages.factures
 {
@@ -24,6 +25,9 @@ namespace facture.Pages.factures
         [BindProperty]
         public FactureDto facture {get; set;}
 
+        [BindProperty]
+        public IList<Client> clientList {get;set;}
+
         public async Task<ActionResult> OnGet(int id)
         {
             var f = await _db.Factures.FindAsync(id);
@@ -37,17 +41,21 @@ namespace facture.Pages.factures
                     quantite = f.quantite,
                     tva = f.tva,
                     reference = f.reference,
+                    raisonSociale = f.raisonSociale,
                 };
+                clientList = await _db.Clients.ToListAsync<Client>();
                 return Page();
             }
         }
 
-        public async Task<ActionResult> OnPost(int id)
+        public async Task<ActionResult> OnPost(int id, int clientId)
         {
 
             if (ModelState.IsValid) {
 
                 Facture fac = await _db.Factures.FindAsync(id);
+
+                Client newClient = await _db.Clients.FirstOrDefaultAsync(c => c.raisonSociale == fac.raisonSociale);
                 
                 _db.Factures.Remove(fac);
 
@@ -58,6 +66,8 @@ namespace facture.Pages.factures
                     quantite = facture.quantite,
                     tva = facture.tva,
                     reference = facture.reference,
+                    raisonSociale = newClient.raisonSociale,
+                    clientId = newClient.id,
                 });
 
                 await _db.SaveChangesAsync();

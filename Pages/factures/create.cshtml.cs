@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using facture.Data;
 using facture.Dtos;
 using facture.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace facture.Pages.factures
 {
@@ -21,14 +22,18 @@ namespace facture.Pages.factures
 
         [BindProperty]
         public FactureDto facture {get; set;}
+        [BindProperty]
+        public IList<Client> clientList {get;set;}
+
+        public async Task OnGet()
+        {   
+            this.clientList = await _db.Clients.ToListAsync<Client>();
+        }
 
         public async Task<ActionResult> OnPost()
         {
             if (ModelState.IsValid) {
-                Client client = _db.Clients.FirstOrDefault(c => c.id == facture.clientId &&
-                                                                c.idCommunEntreprise == facture.idCommunEntreprise &&
-                                                                c.raisonSociale == facture.raisonSociale &&
-                                                                c.idFiscal == facture.idFiscal);
+                Client client = _db.Clients.FirstOrDefault(c => c.raisonSociale == facture.raisonSociale);
                 if (client != null) {
                     Facture newFacture = new Facture(){
                         factureNumber = 0,
@@ -37,7 +42,8 @@ namespace facture.Pages.factures
                         quantite = facture.quantite,
                         tva = facture.tva,
                         reference = facture.reference,
-                        clientId = facture.clientId,
+                        clientId = client.id,
+                        raisonSociale = facture.raisonSociale
                     };
 
                     await _db.Factures.AddAsync(newFacture);

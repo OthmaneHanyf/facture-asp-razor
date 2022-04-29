@@ -15,7 +15,7 @@ namespace facture.Models
         public int registreCommerce {set; get;}
         public int patente {set; get;}
         [Required(ErrorMessage = "Cette Champ est obligatoire")]
-        public int idCommunEntreprise {set; get;}
+        public long idCommunEntreprise {set; get;}
         public string nomRespo {set; get;}
         public string nom {set; get;}
         public string prenom {set; get;}

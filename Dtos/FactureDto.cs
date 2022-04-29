@@ -36,6 +36,7 @@ namespace facture.Dtos
         public int idFiscal {get;set;}
 
         [Required]
-        public int idCommunEntreprise {get;set;}
+        public long idCommunEntreprise {get;set;}
+
     }
 }

@@ -14,23 +14,17 @@ namespace facture.Pages.clients
     public class indexModel : PageModel
     {
         private readonly FactureDbContext _db;
-        public IList<Client> clientList;
         
         public indexModel(FactureDbContext db)
         {
             _db = db;
         }
 
-        public void OnGet()
+        public IList<Client> clientList {get;set;}
+
+        public async Task OnGet()
         {
-            clientList =  new List<Client>();
-
-            foreach (var client in _db.Clients.ToList())
-            {
-                Client tmpClient = client;
-
-                clientList.Add(tmpClient);
-            }
+            this.clientList = await _db.Clients.ToListAsync<Client>();
         }
 
         public async Task<ActionResult> OnPostDelete(int id) 

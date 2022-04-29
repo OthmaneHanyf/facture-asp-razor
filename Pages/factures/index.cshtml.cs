@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using facture.Dtos;
 using facture.Data;
+using System.Text;
+using facture.Models;
 
 namespace facture.Pages.factures
 {
@@ -42,6 +44,15 @@ namespace facture.Pages.factures
                 factureList.Add(tmpFacture);
             }
 
+        }
+
+        public IActionResult OnPostExportCSV() {
+            var builder = new StringBuilder();
+            builder.AppendLine("Facture N,Client RS,Designation,Reference,Prix,Quantite,TVA,Montant HT,Montant TVA,Montant TTC");
+            foreach (var f in _db.Factures.ToList<Facture>()){
+                builder.AppendLine($"{f.factureNumber},{f.raisonSociale},{f.designation},{f.reference},{f.prix},{f.quantite},{f.tva},{f.prix * f.quantite},{f.prix * f.quantite * f.tva / 100},{f.prix * f.quantite * ((double)f.tva / 100 + 1)}");
+            }
+            return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", "facture.csv");
         }
 
         public async Task<ActionResult> OnPostDelete(int id) {

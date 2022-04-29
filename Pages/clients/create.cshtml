@@ -90,7 +90,7 @@
                         <label >ICE</label>
                     </div>
                     <div class="col-6">
-                        <input class="form-control" asp-for="client.idCommunEntreprise" />
+                        <input minlength="15" maxlength="15" class="form-control" asp-for="client.idCommunEntreprise" />
                     </div>
                     <div class="mt-1 col-12">
                         <span class="text-danger" asp-validation-for="client.idCommunEntreprise" ></span>
